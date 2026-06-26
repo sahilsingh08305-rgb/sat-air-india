@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -6,71 +6,82 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  CartesianGrid,
 } from "recharts";
 
-const data = [
-  { day: "Mon", aqi: 120 },
-  { day: "Tue", aqi: 135 },
-  { day: "Wed", aqi: 110 },
-  { day: "Thu", aqi: 160 },
-  { day: "Fri", aqi: 145 },
-  { day: "Sat", aqi: 180 },
-  { day: "Sun", aqi: 150 },
-];
+import { fetchAQI } from "../services/api";
 
 function AQIChart() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadAQI() {
+      try {
+        setLoading(true);
+
+        const aqiData = await fetchAQI();
+
+        const chartData = aqiData.map((item) => ({
+          state: item.state,
+          aqi: item.aqi,
+        }));
+
+        setData(chartData);
+        setError("");
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load AQI data.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadAQI();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-[#131B2E] rounded-xl p-4 h-[350px] flex items-center justify-center">
+        <span className="text-cyan-400">
+          Loading AQI data...
+        </span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-[#131B2E] rounded-xl p-4 h-[350px] flex items-center justify-center">
+        <span className="text-red-400">
+          {error}
+        </span>
+      </div>
+    );
+  }
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      whileHover={{
-        boxShadow: "0px 0px 20px rgba(0, 212, 255, 0.25)",
-      }}
-      className="bg-[#131B2E] rounded-xl p-4 h-[350px]"
-    >
+    <div className="bg-[#131B2E] rounded-xl p-4 h-[350px]">
       <h2 className="text-xl font-semibold mb-4 text-cyan-400">
-        AQI Trend
+        AQI Trend by State
       </h2>
 
       <ResponsiveContainer width="100%" height="90%">
         <AreaChart data={data}>
-          <CartesianGrid
-            strokeDasharray="3 3"
-            stroke="#2A3448"
-          />
-
-          <XAxis
-            dataKey="day"
-            stroke="#9CA3AF"
-          />
-
-          <YAxis
-            stroke="#9CA3AF"
-          />
-
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "#131B2E",
-              border: "1px solid #00D4FF",
-              borderRadius: "10px",
-              color: "#fff",
-            }}
-          />
+          <XAxis dataKey="state" />
+          <YAxis />
+          <Tooltip />
 
           <Area
             type="monotone"
             dataKey="aqi"
             stroke="#00D4FF"
             fill="#00D4FF"
-            fillOpacity={0.25}
-            strokeWidth={3}
-            animationDuration={1500}
+            fillOpacity={0.4}
           />
         </AreaChart>
       </ResponsiveContainer>
-    </motion.div>
+    </div>
   );
 }
 

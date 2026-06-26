@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Navbar from "../components/Navbar";
 import StatCard from "../components/StatCard";
@@ -8,10 +8,49 @@ import HCHOChart from "../components/HCHOChart";
 import StateRanking from "../components/StateRanking";
 import LayerControl from "../components/LayerControl";
 
+import {
+  fetchAQI,
+  fetchHCHO,
+  fetchFires,
+} from "../services/api";
+
 function Dashboard() {
   const [showAQI, setShowAQI] = useState(true);
   const [showHCHO, setShowHCHO] = useState(true);
   const [showFire, setShowFire] = useState(true);
+
+  const [stats, setStats] = useState({
+    averageAQI: 0,
+    hchoHotspots: 0,
+    fireEvents: 0,
+    statesMonitored: 0,
+  });
+
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        const aqiData = await fetchAQI();
+        const hchoData = await fetchHCHO();
+        const fireData = await fetchFires();
+
+        const avgAQI = Math.round(
+          aqiData.reduce((sum, item) => sum + item.aqi, 0) /
+            aqiData.length
+        );
+
+        setStats({
+          averageAQI: avgAQI,
+          hchoHotspots: hchoData.length,
+          fireEvents: fireData.length,
+          statesMonitored: aqiData.length,
+        });
+      } catch (error) {
+        console.error("Failed to load dashboard stats:", error);
+      }
+    }
+
+    loadStats();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#0B1020] text-white">
@@ -29,29 +68,29 @@ function Dashboard() {
         </p>
       </div>
 
-      {/* Stats Cards */}
+      {/* Dynamic Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-8">
         <StatCard
           title="Average AQI"
-          value="135"
+          value={stats.averageAQI}
           color="text-cyan-400"
         />
 
         <StatCard
           title="HCHO Hotspots"
-          value="24"
+          value={stats.hchoHotspots}
           color="text-green-400"
         />
 
         <StatCard
           title="Fire Events"
-          value="51"
+          value={stats.fireEvents}
           color="text-red-400"
         />
 
         <StatCard
           title="States Monitored"
-          value="28"
+          value={stats.statesMonitored}
           color="text-yellow-400"
         />
       </div>

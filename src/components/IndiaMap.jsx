@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -5,27 +6,11 @@ import {
   Popup,
 } from "react-leaflet";
 
-const stations = [
-  { city: "Delhi", lat: 28.6139, lng: 77.2090, aqi: 245 },
-  { city: "Mumbai", lat: 19.0760, lng: 72.8777, aqi: 95 },
-  { city: "Bengaluru", lat: 12.9716, lng: 77.5946, aqi: 65 },
-  { city: "Chennai", lat: 13.0827, lng: 80.2707, aqi: 120 },
-  { city: "Kolkata", lat: 22.5726, lng: 88.3639, aqi: 180 },
-];
-
-const hchoHotspots = [
-  { name: "Delhi NCR", lat: 28.7, lng: 77.1 },
-  { name: "Punjab", lat: 31.1, lng: 75.3 },
-  { name: "Haryana", lat: 29.0, lng: 76.0 },
-  { name: "Mumbai Region", lat: 19.2, lng: 72.9 },
-];
-
-const fireEvents = [
-  { name: "Punjab Fire", lat: 30.9, lng: 75.8 },
-  { name: "Haryana Fire", lat: 29.5, lng: 76.2 },
-  { name: "Assam Fire", lat: 26.2, lng: 91.7 },
-  { name: "Madhya Pradesh Fire", lat: 23.5, lng: 78.5 },
-];
+import {
+  fetchAQI,
+  fetchHCHO,
+  fetchFires,
+} from "../services/api";
 
 function getAQIColor(aqi) {
   if (aqi <= 50) return "green";
@@ -39,6 +24,54 @@ function IndiaMap({
   showHCHO,
   showFire,
 }) {
+  const [stations, setStations] = useState([]);
+  const [hchoHotspots, setHchoHotspots] = useState([]);
+  const [fireEvents, setFireEvents] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        setLoading(true);
+
+        const aqiData = await fetchAQI();
+        const hchoData = await fetchHCHO();
+        const fireData = await fetchFires();
+
+        setStations(aqiData);
+        setHchoHotspots(hchoData);
+        setFireEvents(fireData);
+
+        setError("");
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load satellite data.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="h-full flex items-center justify-center text-cyan-400 text-xl">
+        Loading satellite data...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="h-full flex items-center justify-center text-red-400 text-xl">
+        {error}
+      </div>
+    );
+  }
+
   return (
     <MapContainer
       center={[22.5937, 78.9629]}
@@ -68,6 +101,8 @@ function IndiaMap({
               <strong>{station.city}</strong>
               <br />
               AQI: {station.aqi}
+              <br />
+              Category: {station.category}
             </Popup>
           </CircleMarker>
         ))}
@@ -88,7 +123,11 @@ function IndiaMap({
             <Popup>
               🔵 HCHO Hotspot
               <br />
-              {spot.name}
+              {spot.city}
+              <br />
+              HCHO: {spot.hcho_value}
+              <br />
+              Severity: {spot.severity}
             </Popup>
           </CircleMarker>
         ))}
@@ -110,6 +149,8 @@ function IndiaMap({
               🔥 Fire Event
               <br />
               {fire.name}
+              <br />
+              Intensity: {fire.intensity}
             </Popup>
           </CircleMarker>
         ))}

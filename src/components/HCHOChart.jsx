@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -6,71 +6,82 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  CartesianGrid,
 } from "recharts";
 
-const data = [
-  { day: "Mon", hcho: 0.8 },
-  { day: "Tue", hcho: 1.1 },
-  { day: "Wed", hcho: 0.9 },
-  { day: "Thu", hcho: 1.4 },
-  { day: "Fri", hcho: 1.2 },
-  { day: "Sat", hcho: 1.8 },
-  { day: "Sun", hcho: 1.3 },
-];
+import { fetchHCHO } from "../services/api";
 
 function HCHOChart() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadHCHO() {
+      try {
+        setLoading(true);
+
+        const hchoData = await fetchHCHO();
+
+        const chartData = hchoData.map((item) => ({
+          city: item.city,
+          hcho: item.hcho_value,
+        }));
+
+        setData(chartData);
+        setError("");
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load HCHO data.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadHCHO();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-[#131B2E] rounded-xl p-4 h-[350px] flex items-center justify-center">
+        <span className="text-green-400">
+          Loading HCHO data...
+        </span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-[#131B2E] rounded-xl p-4 h-[350px] flex items-center justify-center">
+        <span className="text-red-400">
+          {error}
+        </span>
+      </div>
+    );
+  }
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, delay: 0.2 }}
-      whileHover={{
-        boxShadow: "0px 0px 20px rgba(0, 255, 179, 0.25)",
-      }}
-      className="bg-[#131B2E] rounded-xl p-4 h-[350px]"
-    >
+    <div className="bg-[#131B2E] rounded-xl p-4 h-[350px]">
       <h2 className="text-xl font-semibold mb-4 text-green-400">
-        HCHO Trend
+        HCHO Levels by City
       </h2>
 
       <ResponsiveContainer width="100%" height="90%">
         <AreaChart data={data}>
-          <CartesianGrid
-            strokeDasharray="3 3"
-            stroke="#2A3448"
-          />
-
-          <XAxis
-            dataKey="day"
-            stroke="#9CA3AF"
-          />
-
-          <YAxis
-            stroke="#9CA3AF"
-          />
-
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "#131B2E",
-              border: "1px solid #00FFB3",
-              borderRadius: "10px",
-              color: "#fff",
-            }}
-          />
+          <XAxis dataKey="city" />
+          <YAxis />
+          <Tooltip />
 
           <Area
             type="monotone"
             dataKey="hcho"
             stroke="#00FFB3"
             fill="#00FFB3"
-            fillOpacity={0.25}
-            strokeWidth={3}
-            animationDuration={1500}
+            fillOpacity={0.4}
           />
         </AreaChart>
       </ResponsiveContainer>
-    </motion.div>
+    </div>
   );
 }
 
