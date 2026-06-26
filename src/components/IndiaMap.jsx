@@ -86,74 +86,91 @@ function IndiaMap({
 
       {/* AQI Stations */}
       {showAQI &&
-        stations.map((station, index) => (
-          <CircleMarker
-            key={index}
-            center={[station.lat, station.lng]}
-            radius={5}
-            pathOptions={{
-              color: getAQIColor(station.aqi),
-              fillColor: getAQIColor(station.aqi),
-              fillOpacity: 0.8,
-            }}
-          >
-            <Popup>
-              <strong>{station.city}</strong>
-              <br />
-              AQI: {station.aqi}
-              <br />
-              Category: {station.category}
-            </Popup>
-          </CircleMarker>
-        ))}
+        stations
+          .filter(
+            (station) =>
+              station.lat != null && station.lng != null
+          )
+          .map((station, index) => (
+            <CircleMarker
+              key={`aqi-${index}`}
+              center={[station.lat, station.lng]}
+              radius={5}
+              pathOptions={{
+                color: getAQIColor(station.aqi),
+                fillColor: getAQIColor(station.aqi),
+                fillOpacity: 0.8,
+              }}
+            >
+              <Popup>
+                <strong>{station.city}</strong>
+                <br />
+                AQI: {station.aqi}
+                <br />
+                Category: {station.category}
+              </Popup>
+            </CircleMarker>
+          ))}
 
       {/* HCHO Hotspots */}
       {showHCHO &&
-        hchoHotspots.map((spot, index) => (
-          <CircleMarker
-            key={`hcho-${index}`}
-            center={[spot.lat, spot.lng]}
-            radius={3}
-            pathOptions={{
-              color: "#00D4FF",
-              fillColor: "#00D4FF",
-              fillOpacity: 0.7,
-            }}
-          >
-            <Popup>
-              🔵 HCHO Hotspot
-              <br />
-              {spot.city}
-              <br />
-              HCHO: {spot.hcho_value}
-              <br />
-              Severity: {spot.severity}
-            </Popup>
-          </CircleMarker>
-        ))}
+        hchoHotspots
+          .filter(
+            (spot) =>
+              spot.lat != null && spot.lng != null
+          )
+          .map((spot, index) => (
+            <CircleMarker
+              key={`hcho-${index}`}
+              center={[spot.lat, spot.lng]}
+              radius={3}
+              pathOptions={{
+                color: "#00D4FF",
+                fillColor: "#00D4FF",
+                fillOpacity: 0.7,
+              }}
+            >
+              <Popup>
+                🔵 HCHO Hotspot
+                <br />
+                {spot.city}
+                <br />
+                HCHO: {spot.hcho_value}
+                <br />
+                Severity: {spot.severity}
+              </Popup>
+            </CircleMarker>
+          ))}
 
       {/* Fire Events */}
       {showFire &&
-        fireEvents.map((fire, index) => (
-          <CircleMarker
-            key={`fire-${index}`}
-            center={[fire.lat, fire.lng]}
-            radius={4}
-            pathOptions={{
-              color: "#FF3B30",
-              fillColor: "#FF3B30",
-              fillOpacity: 0.8,
-            }}
-          >
-            <Popup>
-              🔥 Fire Event
-              <br />
-              {fire.name}
-              <br />
-              Intensity: {fire.intensity}
-            </Popup>
-          </CircleMarker>
-        ))}
+        fireEvents
+          .filter(
+            (fire) =>
+              fire.lat != null && fire.lng != null
+          )
+          .map((fire, index) => (
+            <CircleMarker
+              key={`fire-${index}`}
+              center={[fire.lat, fire.lng]}
+              radius={4}
+              pathOptions={{
+                color: "#FF3B30",
+                fillColor: "#FF3B30",
+                fillOpacity: 0.8,
+              }}
+            >
+              <Popup>
+                🔥 Fire Event
+                <br />
+                State: {fire.state}
+                <br />
+                Intensity: {fire.intensity}
+                <br />
+                Satellite: {fire.satellite}
+              </Popup>
+            </CircleMarker>
+          ))}
     </MapContainer>
   );
 }

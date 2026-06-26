@@ -1,0 +1,6 @@
+city,lat,lng,hcho_value,severity,last_updated
+Delhi,28.6139,77.2090,2.8,High,2026-06-26
+Mumbai,19.0760,72.8777,1.9,Medium,2026-06-26
+Bengaluru,12.9716,77.5946,1.1,Low,2026-06-26
+Hyderabad,17.3850,78.4867,2.2,Medium,2026-06-26
+Kolkata,22.5726,88.3639,2.6,High,2026-06-26
