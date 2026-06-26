@@ -1,5 +1,5 @@
-from services.aqi_services import get_live_aqi
 from flask import Blueprint, jsonify
+from services.aqi_services import get_live_aqi
 
 aqi_bp = Blueprint("aqi", __name__)
 

@@ -1,14 +1,56 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
-const states = [
-  { name: "Delhi", aqi: 245 },
-  { name: "Haryana", aqi: 210 },
-  { name: "Punjab", aqi: 190 },
-  { name: "Uttar Pradesh", aqi: 175 },
-  { name: "Rajasthan", aqi: 160 },
-];
+import { fetchAQI } from "../services/api";
 
 function StateRanking() {
+  const [states, setStates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadStates() {
+      try {
+        setLoading(true);
+
+        const data = await fetchAQI();
+
+        const sortedData = [...data].sort(
+          (a, b) => b.aqi - a.aqi
+        );
+
+        setStates(sortedData);
+        setError("");
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load rankings.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadStates();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-[#131B2E] rounded-xl p-6 h-full flex items-center justify-center">
+        <span className="text-cyan-400">
+          Loading rankings...
+        </span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-[#131B2E] rounded-xl p-6 h-full flex items-center justify-center">
+        <span className="text-red-400">
+          {error}
+        </span>
+      </div>
+    );
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 50 }}
@@ -35,7 +77,7 @@ function StateRanking() {
               #{index + 1}
             </span>
 
-            <span>{state.name}</span>
+            <span>{state.state}</span>
           </div>
 
           <span className="font-bold text-red-400">
