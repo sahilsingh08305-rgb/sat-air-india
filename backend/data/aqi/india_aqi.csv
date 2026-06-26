@@ -1,7 +1,7 @@
-state,aqi,category,last_updated
-Delhi,255,Very Poor,2026-06-26
-Maharashtra,142,Moderate,2026-06-26
-Karnataka,78,Satisfactory,2026-06-26
-Tamil Nadu,95,Satisfactory,2026-06-26
-Punjab,165,Poor,2026-06-26
-Uttar Pradesh,210,Poor,2026-06-26
+state,city,lat,lng,aqi,category,last_updated
+Delhi,Delhi,28.6139,77.2090,255,Very Poor,2026-06-26
+Maharashtra,Mumbai,19.0760,72.8777,142,Moderate,2026-06-26
+Karnataka,Bengaluru,12.9716,77.5946,78,Satisfactory,2026-06-26
+Tamil Nadu,Chennai,13.0827,80.2707,95,Satisfactory,2026-06-26
+Punjab,Amritsar,31.6340,74.8723,165,Poor,2026-06-26
+Uttar Pradesh,Lucknow,26.8467,80.9462,210,Poor,2026-06-26
