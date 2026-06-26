@@ -1,11 +1,9 @@
 from flask import Blueprint, jsonify
+from services.hcho_services import get_live_hcho
 
 hcho_bp = Blueprint("hcho", __name__)
 
+
 @hcho_bp.route("/api/hcho")
 def get_hcho():
-    return jsonify([
-        {"city": "Delhi", "hcho_value": 2.8, "severity": "High"},
-        {"city": "Mumbai", "hcho_value": 1.9, "severity": "Medium"},
-        {"city": "Bengaluru", "hcho_value": 1.1, "severity": "Low"}
-    ])
+    return jsonify(get_live_hcho())

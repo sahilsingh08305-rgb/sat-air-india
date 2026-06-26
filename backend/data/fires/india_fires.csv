@@ -1,0 +1,6 @@
+latitude,longitude,state,intensity,satellite,last_updated
+28.6139,77.2090,Delhi,High,MODIS,2026-06-26
+19.0760,72.8777,Maharashtra,Medium,VIIRS,2026-06-26
+12.9716,77.5946,Karnataka,Low,MODIS,2026-06-26
+17.3850,78.4867,Telangana,Medium,VIIRS,2026-06-26
+22.5726,88.3639,West Bengal,High,MODIS,2026-06-26
