@@ -1,7 +1,31 @@
 state,aqi,category,last_updated
-Delhi,285,Very Poor,2026-06-26
-Maharashtra,142,Moderate,2026-06-26
-Karnataka,78,Satisfactory,2026-06-26
-Tamil Nadu,95,Satisfactory,2026-06-26
-Punjab,165,Poor,2026-06-26
-Uttar Pradesh,210,Poor,2026-06-26
+Andhra Pradesh,376.0,Very Poor,2026-06-28
+Arunachal Pradesh,214.0,Poor,2026-06-28
+Assam,333.0,Very Poor,2026-06-28
+Bihar,399.0,Very Poor,2026-06-28
+Chandigarh,581.0,Severe,2026-06-28
+Chhattisgarh,345.0,Very Poor,2026-06-28
+Delhi,572.0,Severe,2026-06-28
+Gujarat,432.0,Severe,2026-06-28
+Haryana,468.0,Severe,2026-06-28
+Himachal Pradesh,531.0,Severe,2026-06-28
+Jammu and Kashmir,122.0,Moderate,2026-06-28
+Jharkhand,575.0,Severe,2026-06-28
+Karnataka,299.0,Poor,2026-06-28
+Kerala,227.0,Poor,2026-06-28
+Madhya Pradesh,376.0,Very Poor,2026-06-28
+Maharashtra,308.0,Very Poor,2026-06-28
+Meghalaya,247.0,Poor,2026-06-28
+Mizoram,112.0,Moderate,2026-06-28
+Nagaland,150.0,Moderate,2026-06-28
+Odisha,390.0,Very Poor,2026-06-28
+Puducherry,286.0,Poor,2026-06-28
+Punjab,391.0,Very Poor,2026-06-28
+Rajasthan,375.0,Very Poor,2026-06-28
+Sikkim,150.0,Moderate,2026-06-28
+Tamil Nadu,258.0,Poor,2026-06-28
+Telangana,379.0,Very Poor,2026-06-28
+Tripura,377.0,Very Poor,2026-06-28
+Uttar Pradesh,407.0,Severe,2026-06-28
+Uttarakhand,383.0,Very Poor,2026-06-28
+West Bengal,384.0,Very Poor,2026-06-28
