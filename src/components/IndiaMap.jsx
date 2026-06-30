@@ -6,48 +6,34 @@ import {
   Popup,
 } from "react-leaflet";
 
-import {
-  fetchAQI,
-  fetchHCHO,
-  fetchFires,
-} from "../services/api";
+import { fetchAQI } from "../services/api";
 
 function getAQIColor(aqi) {
   if (aqi <= 50) return "green";
   if (aqi <= 100) return "yellow";
   if (aqi <= 200) return "orange";
-  return "red";
+  if (aqi <= 300) return "red";
+  return "purple";
 }
 
-function IndiaMap({
-  showAQI,
-  showHCHO,
-  showFire,
-}) {
+function IndiaMap() {
   const [stations, setStations] = useState([]);
-  const [hchoHotspots, setHchoHotspots] = useState([]);
-  const [fireEvents, setFireEvents] = useState([]);
-
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     async function loadData() {
       try {
-        setLoading(true);
+        const data = await fetchAQI();
 
-        const aqiData = await fetchAQI();
-        const hchoData = await fetchHCHO();
-        const fireData = await fetchFires();
+        const validData = data.filter(
+          (item) =>
+            Number.isFinite(Number(item.lat)) &&
+            Number.isFinite(Number(item.lng))
+        );
 
-        setStations(aqiData);
-        setHchoHotspots(hchoData);
-        setFireEvents(fireData);
-
-        setError("");
+        setStations(validData);
       } catch (err) {
-        console.error(err);
-        setError("Failed to load satellite data.");
+        console.error("AQI Load Error:", err);
       } finally {
         setLoading(false);
       }
@@ -58,16 +44,8 @@ function IndiaMap({
 
   if (loading) {
     return (
-      <div className="h-full flex items-center justify-center text-cyan-400 text-xl">
-        Loading satellite data...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="h-full flex items-center justify-center text-red-400 text-xl">
-        {error}
+      <div className="h-full flex items-center justify-center text-cyan-400">
+        Loading Map...
       </div>
     );
   }
@@ -76,101 +54,32 @@ function IndiaMap({
     <MapContainer
       center={[22.5937, 78.9629]}
       zoom={5}
-      scrollWheelZoom={true}
-      className="h-full w-full rounded-xl"
+      className="h-full w-full"
     >
       <TileLayer
-        attribution="&copy; OpenStreetMap contributors"
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      {/* AQI Stations */}
-      {showAQI &&
-        stations
-          .filter(
-            (station) =>
-              station.lat != null && station.lng != null
-          )
-          .map((station, index) => (
-            <CircleMarker
-              key={`aqi-${index}`}
-              center={[station.lat, station.lng]}
-              radius={5}
-              pathOptions={{
-                color: getAQIColor(station.aqi),
-                fillColor: getAQIColor(station.aqi),
-                fillOpacity: 0.8,
-              }}
-            >
-              <Popup>
-                <strong>{station.city}</strong>
-                <br />
-                AQI: {station.aqi}
-                <br />
-                Category: {station.category}
-              </Popup>
-            </CircleMarker>
-          ))}
-
-      {/* HCHO Hotspots */}
-      {showHCHO &&
-        hchoHotspots
-          .filter(
-            (spot) =>
-              spot.lat != null && spot.lng != null
-          )
-          .map((spot, index) => (
-            <CircleMarker
-              key={`hcho-${index}`}
-              center={[spot.lat, spot.lng]}
-              radius={3}
-              pathOptions={{
-                color: "#00D4FF",
-                fillColor: "#00D4FF",
-                fillOpacity: 0.7,
-              }}
-            >
-              <Popup>
-                🔵 HCHO Hotspot
-                <br />
-                {spot.city}
-                <br />
-                HCHO: {spot.hcho_value}
-                <br />
-                Severity: {spot.severity}
-              </Popup>
-            </CircleMarker>
-          ))}
-
-      {/* Fire Events */}
-      {showFire &&
-        fireEvents
-          .filter(
-            (fire) =>
-              fire.lat != null && fire.lng != null
-          )
-          .map((fire, index) => (
-            <CircleMarker
-              key={`fire-${index}`}
-              center={[fire.lat, fire.lng]}
-              radius={4}
-              pathOptions={{
-                color: "#FF3B30",
-                fillColor: "#FF3B30",
-                fillOpacity: 0.8,
-              }}
-            >
-              <Popup>
-                🔥 Fire Event
-                <br />
-                State: {fire.state}
-                <br />
-                Intensity: {fire.intensity}
-                <br />
-                Satellite: {fire.satellite}
-              </Popup>
-            </CircleMarker>
-          ))}
+      {stations.map((station, index) => (
+        <CircleMarker
+          key={index}
+          center={[Number(station.lat), Number(station.lng)]}
+          radius={5}
+          pathOptions={{
+            color: getAQIColor(station.aqi),
+            fillColor: getAQIColor(station.aqi),
+            fillOpacity: 0.8,
+          }}
+        >
+          <Popup>
+            <strong>{station.state}</strong>
+            <br />
+            AQI: {station.aqi}
+            <br />
+            Category: {station.category}
+          </Popup>
+        </CircleMarker>
+      ))}
     </MapContainer>
   );
 }

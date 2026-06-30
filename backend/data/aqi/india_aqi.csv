@@ -1,31 +1,31 @@
-state,aqi,category,last_updated
-Andhra Pradesh,376.0,Very Poor,2026-06-28
-Arunachal Pradesh,214.0,Poor,2026-06-28
-Assam,333.0,Very Poor,2026-06-28
-Bihar,399.0,Very Poor,2026-06-28
-Chandigarh,581.0,Severe,2026-06-28
-Chhattisgarh,345.0,Very Poor,2026-06-28
-Delhi,572.0,Severe,2026-06-28
-Gujarat,432.0,Severe,2026-06-28
-Haryana,468.0,Severe,2026-06-28
-Himachal Pradesh,531.0,Severe,2026-06-28
-Jammu and Kashmir,122.0,Moderate,2026-06-28
-Jharkhand,575.0,Severe,2026-06-28
-Karnataka,299.0,Poor,2026-06-28
-Kerala,227.0,Poor,2026-06-28
-Madhya Pradesh,376.0,Very Poor,2026-06-28
-Maharashtra,308.0,Very Poor,2026-06-28
-Meghalaya,247.0,Poor,2026-06-28
-Mizoram,112.0,Moderate,2026-06-28
-Nagaland,150.0,Moderate,2026-06-28
-Odisha,390.0,Very Poor,2026-06-28
-Puducherry,286.0,Poor,2026-06-28
-Punjab,391.0,Very Poor,2026-06-28
-Rajasthan,375.0,Very Poor,2026-06-28
-Sikkim,150.0,Moderate,2026-06-28
-Tamil Nadu,258.0,Poor,2026-06-28
-Telangana,379.0,Very Poor,2026-06-28
-Tripura,377.0,Very Poor,2026-06-28
-Uttar Pradesh,407.0,Severe,2026-06-28
-Uttarakhand,383.0,Very Poor,2026-06-28
-West Bengal,384.0,Very Poor,2026-06-28
+state,lat,lng,aqi,category,last_updated
+Andhra Pradesh,16.5062,80.6480,376.0,Very Poor,2026-06-28
+Arunachal Pradesh,27.0844,93.6053,214.0,Poor,2026-06-28
+Assam,26.1445,91.7362,333.0,Very Poor,2026-06-28
+Bihar,25.5941,85.1376,399.0,Very Poor,2026-06-28
+Chandigarh,30.7333,76.7794,581.0,Severe,2026-06-28
+Chhattisgarh,21.2514,81.6296,345.0,Very Poor,2026-06-28
+Delhi,28.6139,77.2090,572.0,Severe,2026-06-28
+Gujarat,23.0225,72.5714,432.0,Severe,2026-06-28
+Haryana,29.0588,76.0856,468.0,Severe,2026-06-28
+Himachal Pradesh,31.1048,77.1734,531.0,Severe,2026-06-28
+Jammu and Kashmir,34.0837,74.7973,122.0,Moderate,2026-06-28
+Jharkhand,23.3441,85.3096,575.0,Severe,2026-06-28
+Karnataka,12.9716,77.5946,299.0,Poor,2026-06-28
+Kerala,8.5241,76.9366,227.0,Poor,2026-06-28
+Madhya Pradesh,23.2599,77.4126,376.0,Very Poor,2026-06-28
+Maharashtra,19.0760,72.8777,308.0,Very Poor,2026-06-28
+Meghalaya,25.5788,91.8933,247.0,Poor,2026-06-28
+Mizoram,23.7271,92.7176,112.0,Moderate,2026-06-28
+Nagaland,25.6751,94.1086,150.0,Moderate,2026-06-28
+Odisha,20.2961,85.8245,390.0,Very Poor,2026-06-28
+Puducherry,11.9416,79.8083,286.0,Poor,2026-06-28
+Punjab,31.1471,75.3412,391.0,Very Poor,2026-06-28
+Rajasthan,26.9124,75.7873,375.0,Very Poor,2026-06-28
+Sikkim,27.3389,88.6065,150.0,Moderate,2026-06-28
+Tamil Nadu,13.0827,80.2707,258.0,Poor,2026-06-28
+Telangana,17.3850,78.4867,379.0,Very Poor,2026-06-28
+Tripura,23.8315,91.2868,377.0,Very Poor,2026-06-28
+Uttar Pradesh,26.8467,80.9462,407.0,Severe,2026-06-28
+Uttarakhand,30.3165,78.0322,383.0,Very Poor,2026-06-28
+West Bengal,22.5726,88.3639,384.0,Very Poor,2026-06-28

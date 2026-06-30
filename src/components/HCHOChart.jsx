@@ -22,8 +22,8 @@ function HCHOChart() {
 
         const hchoData = await fetchHCHO();
 
-        const chartData = hchoData.map((item) => ({
-          city: item.city,
+        const chartData = hchoData.map((item, index) => ({
+          city: item.city || `Point ${index + 1}`,
           hcho: item.hcho_value,
         }));
 
@@ -63,13 +63,18 @@ function HCHOChart() {
   return (
     <div className="bg-[#131B2E] rounded-xl p-4 h-[350px]">
       <h2 className="text-xl font-semibold mb-4 text-green-400">
-        HCHO Levels by City
+        HCHO Levels Across India
       </h2>
 
       <ResponsiveContainer width="100%" height="90%">
         <AreaChart data={data}>
-          <XAxis dataKey="city" />
+          <XAxis
+            dataKey="city"
+            hide={data.length > 15}
+          />
+
           <YAxis />
+
           <Tooltip />
 
           <Area
