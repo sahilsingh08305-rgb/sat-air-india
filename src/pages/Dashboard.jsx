@@ -109,7 +109,11 @@ function Dashboard() {
               showFire={showFire}
               setShowFire={setShowFire}
             />
-              <IndiaMap />
+           <IndiaMap
+  showAQI={showAQI}
+  showHCHO={showHCHO}
+  showFire={showFire}
+/>
           </div>
 
           {/* Legend */}
