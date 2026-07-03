@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -6,81 +5,137 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+  CartesianGrid,
 } from "recharts";
 
-import { fetchAQI } from "../services/api";
+const data = [
+  { state: "Delhi", aqi: 0 },
+  { state: "MH", aqi: 0 },
+  { state: "KA", aqi: 0 },
+  { state: "TN", aqi: 0 },
+  { state: "WB", aqi: 0 },
+  { state: "UP", aqi: 0 },
+  { state: "RJ", aqi: 0 },
+  { state: "PB", aqi: 0 },
+];
 
 function AQIChart() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    async function loadAQI() {
-      try {
-        setLoading(true);
-
-        const aqiData = await fetchAQI();
-
-        const chartData = aqiData.map((item) => ({
-          state: item.state,
-          aqi: item.aqi,
-        }));
-
-        setData(chartData);
-        setError("");
-      } catch (err) {
-        console.error(err);
-        setError("Failed to load AQI data.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadAQI();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="bg-[#131B2E] rounded-xl p-4 h-[350px] flex items-center justify-center">
-        <span className="text-cyan-400">
-          Loading AQI data...
-        </span>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-[#131B2E] rounded-xl p-4 h-[350px] flex items-center justify-center">
-        <span className="text-red-400">
-          {error}
-        </span>
-      </div>
-    );
-  }
-
   return (
-    <div className="bg-[#131B2E] rounded-xl p-4 h-[350px]">
-      <h2 className="text-xl font-semibold mb-4 text-cyan-400">
-        AQI Trend by State
-      </h2>
+    <div
+      className="
+        relative
+        overflow-hidden
 
-      <ResponsiveContainer width="100%" height="90%">
-        <AreaChart data={data}>
-          <XAxis dataKey="state" />
-          <YAxis />
-          <Tooltip />
+        bg-gradient-to-br
+        from-[#0B1328]
+        via-[#0F1B33]
+        to-[#132446]
 
-          <Area
-            type="monotone"
-            dataKey="aqi"
-            stroke="#00D4FF"
-            fill="#00D4FF"
-            fillOpacity={0.4}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+        border border-cyan-500/10
+        rounded-3xl
+        p-6
+
+        shadow-2xl
+        shadow-cyan-500/5
+      "
+    >
+      {/* Glow */}
+      <div
+        className="
+          absolute
+          -top-10
+          -right-10
+          w-40 h-40
+          rounded-full
+          bg-cyan-500/10
+          blur-3xl
+        "
+      />
+
+      {/* Header */}
+      <div className="relative mb-6">
+        <p className="text-[11px] uppercase tracking-[4px] text-gray-500">
+          Analytics
+        </p>
+
+        <h2 className="text-3xl font-bold text-cyan-300 mt-2">
+          🌫 AQI Trend
+        </h2>
+
+        <p className="text-gray-500 text-sm mt-2">
+          State-wise Air Quality Index overview
+        </p>
+      </div>
+
+      {/* Chart */}
+      <div className="h-[320px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={data}>
+            <defs>
+              <linearGradient
+                id="aqiGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop
+                  offset="5%"
+                  stopColor="#22D3EE"
+                  stopOpacity={0.7}
+                />
+
+                <stop
+                  offset="95%"
+                  stopColor="#22D3EE"
+                  stopOpacity={0}
+                />
+              </linearGradient>
+            </defs>
+
+            <CartesianGrid
+              stroke="#1F2937"
+              strokeDasharray="4 4"
+            />
+
+            <XAxis
+              dataKey="state"
+              tick={{
+                fill: "#94A3B8",
+                fontSize: 12,
+              }}
+              axisLine={false}
+              tickLine={false}
+            />
+
+            <YAxis
+              tick={{
+                fill: "#94A3B8",
+                fontSize: 12,
+              }}
+              axisLine={false}
+              tickLine={false}
+            />
+
+            <Tooltip
+              contentStyle={{
+                background: "#0B1328",
+                border: "1px solid #06B6D4",
+                borderRadius: "16px",
+                color: "#fff",
+              }}
+            />
+
+            <Area
+              type="monotone"
+              dataKey="aqi"
+              stroke="#22D3EE"
+              strokeWidth={3}
+              fill="url(#aqiGradient)"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
