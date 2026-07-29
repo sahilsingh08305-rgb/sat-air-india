@@ -1,5 +1,4 @@
-const BASE_URL = "http://127.0.0.1:5000";
-
+const BASE_URL = "https://sat-air-india-1.onrender.com";
 export async function fetchAQI() {
   const res = await fetch(`${BASE_URL}/api/aqi`);
   return res.json();
